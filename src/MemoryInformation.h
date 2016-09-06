@@ -58,8 +58,8 @@ inline uint64_t getTotalMemory()
     return static_cast<uint64_t>(statex.ullTotalPhys / 1024 / 1024);
 #elif defined(OSVR_LINUX)
     struct sysinfo info;
-    auto ret = sysinfo(&info);
-    const auto mem_mb = (sysinfo.totalram * sysinfo.mem_unit) / 1024 / 1024;
+    const auto ret = ::sysinfo(&info);
+    const auto mem_mb = (info.totalram * info.mem_unit) / 1024 / 1024;
     return static_cast<uint64_t>(mem_mb);
 #elif defined(OSVR_MACOSX)
     int mib[] = { CTL_HW, HW_MEMSIZE };
