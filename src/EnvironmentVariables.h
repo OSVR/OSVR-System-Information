@@ -36,7 +36,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <iostrea> // debugging
+#include <iostream> // debugging
 
 // Platform-specific includes
 #if defined(OSVR_WINDOWS)
