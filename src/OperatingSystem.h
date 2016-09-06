@@ -39,9 +39,6 @@
 // Platform-specific includes
 #if defined(OSVR_WINDOWS)
 #include <windows.h>
-// Use RtlGetVersion() instead of deprecated GetVersionEx().
-NTSTATUS (WINAPI *RtlGetVersion)(LPOSVERSIONINFOEXW);
-*(FARPROC*)&RtlGetVersion = GetProcAddress(GetModuleHandleA("ntdll"), "RtlGetVersion");
 #elif defined(OSVR_POSIX)
 #include <sys/utsname.h>
 #endif
@@ -75,13 +72,16 @@ namespace sysinfo {
 
         return info.sysname;
 #elif defined(OSVR_WINDOWS)
-        if (!RtlGetVersion) {
+        static auto RtlGetVersion = (fnRtlGetVersion)GetProcAddress(GetModuleHandleA("ntdll.dll"), "RtlGetVersion");
+        if (!RtlGetVersion)
             return "";
-        }
 
-        OSVERSIONINFOEXW version_info = {};
+        RTL_OSVERSIONINFOEXW version_info = { 0 };
         version_info.dwOSVersionInfoSize = sizeof(version_info);
-        RtlGetVersion(&version_info);
+        const auto ret = RtlGetVersion((PRTL_OSVERSIONINFOW)&version_info);
+        if (ret != 0)
+            return "";
+
         const auto x = version_info.dwMajorVersion;
         const auto y = version_info.dwMinorVersion;
         const auto ws = (version_info.wProductType == VER_NT_WORKSTATION);
@@ -136,13 +136,15 @@ namespace sysinfo {
 
         return info.release;
 #elif defined(OSVR_WINDOWS)
-        if (!RtlGetVersion) {
+        static auto RtlGetVersion = (fnRtlGetVersion)GetProcAddress(GetModuleHandleA("ntdll.dll"), "RtlGetVersion");
+        if (!RtlGetVersion)
             return "";
-        }
 
-        OSVERSIONINFOEXW version_info = {};
+        RTL_OSVERSIONINFOEXW version_info = { 0 };
         version_info.dwOSVersionInfoSize = sizeof(version_info);
-        RtlGetVersion(&version_info);
+        const auto ret = RtlGetVersion((PRTL_OSVERSIONINFOW)&version_info);
+        if (ret != 0)
+            return "";
 
         const auto major = version_info.dwMajorVersion;
         const auto minor = version_info.dwMinorVersion;
