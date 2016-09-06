@@ -37,6 +37,7 @@
 #include <string>
 #include <vector>
 
+// Platform-specific includes
 #if defined(OSVR_WINDOWS)
 #include <windows.h>
 #endif
@@ -49,53 +50,56 @@ extern char **environ;
 namespace osvr {
 namespace sysinfo {
 
-    using EnvironmentVariablesList = std::map<std::string, std::string>;
+using EnvironmentVariablesList = std::map<std::string, std::string>;
 
-    inline EnvironmentVariablesList getEnvironmentVariables()
-    {
-        std::vector<std::string> strs;
-
+inline EnvironmentVariablesList getEnvironmentVariables()
+{
+    std::vector<std::string> strs;
 
 #if defined(OSVR_WINDOWS)
-        auto envvars = GetEnvironmentStrings();
-        while (*envvars != '\0') {
-            strs.emplace_back(std::string(envvars));
-            envvars += strlen(envvars);
-            envvars++;
-        }
-        FreeEnvironmentStrings(envvars);
+    auto envvars = GetEnvironmentStrings();
+    while (*envvars != '\0') {
+        strs.emplace_back(std::string(envvars));
+        envvars += strlen(envvars);
+        envvars++;
+    }
+    FreeEnvironmentStrings(envvars);
 #elif defined(OSVR_POSIX)
-        auto envvars = environ;
-        while (*envvars) {
-            strs.emplace_back(std::string(*envvars));
-            envvars++;
-        }
+    auto envvars = environ;
+    while (*envvars) {
+        strs.emplace_back(std::string(*envvars));
+        envvars++;
+    }
 #else
 #error "Unsupported platform."
 #endif
 
-        EnvironmentVariablesList env_vars;
+    EnvironmentVariablesList env_vars;
 
-        for (auto str : strs) {
-            if (str.empty())
-                continue;
+    for (auto str : strs) {
+        if (str.empty())
+            continue;
 
-            // Ignore internal Windows environment variables
-            if ('=' == str[0])
-                continue;
+        // Ignore internal Windows environment variables
+        if ('=' == str[0])
+            continue;
 
-            auto pos = str.find('=');
-            if (std::string::npos == pos)
-                continue;
+        // Split VAR=VALUE strings into VAR and VALUE components
+        auto pos = str.find('=');
+        if (std::string::npos == pos)
+            continue;
 
-            auto var = str.substr(0, pos);
-            auto value = str.substr(pos + 1);
-
-            env_vars[var] = value;
+        auto var = str.substr(0, pos);
+        auto value = std::string("");
+        if (pos < str.size() - 1) {
+            value = str.substr(pos + 1);
         }
 
-        return env_vars;
+        env_vars[var] = value;
     }
+
+    return env_vars;
+}
 
 } // end namespace sysinfo
 } // end namespace osvr
