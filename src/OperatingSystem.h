@@ -34,6 +34,7 @@
 
 // Standard includes
 #include <string>
+#include <sstream>
 
 // Platform-specific includes
 #if defined(OSVR_WINDOWS)
@@ -73,13 +74,13 @@ namespace sysinfo {
 
         return info.sysname;
 #elif defined(OSVR_WINDOWS)
-        OSVERSIONINFO version_info = {};
-        version_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+        OSVERSIONINFOEX version_info = {};
+        version_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
         GetVersionEx(&version_info);
         const auto x = version_info.dwMajorVersion;
         const auto y = version_info.dwMinorVersion;
         const auto ws = (version_info.wProductType == VER_NT_WORKSTATION);
-        const auto sm_serverr2 = static_cast<bool>(GetSystemMetrics(SM_SERVERR2));
+        const auto sm_serverr2 = (0 != GetSystemMetrics(SM_SERVERR2));
         const auto wh_server = version_info.wSuiteMask & VER_SUITE_WH_SERVER;
         const auto nt_workstation = (version_info.wProductType == VER_NT_WORKSTATION);
 
