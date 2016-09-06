@@ -39,6 +39,7 @@
 // Platform-specific includes
 #if defined(OSVR_WINDOWS)
 #include <windows.h>
+typedef LONG(NTAPI* fnRtlGetVersion)(PRTL_OSVERSIONINFOW lpVersionInformation);
 #elif defined(OSVR_POSIX)
 #include <sys/utsname.h>
 #endif
