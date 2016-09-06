@@ -11,3 +11,6 @@ target_include_directories(osvr_system_report
 	SYSTEM PRIVATE
 	${CMAKE_SOURCE_DIR}/vendor/jsoncpp/include)
 
+add_test(NAME osvr_system_report_test
+	COMMAND osvr_system_report)
+
