@@ -27,7 +27,7 @@
 #define INCLUDED_OperatingSystem_h_GUID_24F0A89A_ECA2_4270_90B8_195965948F0C
 
 // Internal Includes
-// - none
+#include "Utilities.h"
 
 // Library/third-party includes
 // - none
@@ -155,7 +155,7 @@ namespace sysinfo {
         std::ostringstream version;
         version << major << "." << minor << " (build " << build << ")";
         if (sp_str) {
-            version << " " << std::string(sp_str);
+            version << " " << to_string(sp_str);
         }
         return version.str();
 #else
