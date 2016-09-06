@@ -36,6 +36,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <iostrea> // debugging
 
 // Platform-specific includes
 #if defined(OSVR_WINDOWS)
@@ -77,6 +78,8 @@ inline EnvironmentVariablesList getEnvironmentVariables()
     EnvironmentVariablesList env_vars;
 
     for (auto str : strs) {
+        std::cout << " -- Working on [" << str << "]..." << std::endl;
+
         if (str.empty())
             continue;
 
