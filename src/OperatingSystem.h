@@ -155,7 +155,7 @@ namespace sysinfo {
         std::ostringstream version;
         version << major << "." << minor << " (build " << build << ")";
         if (sp_str) {
-            version << " " << sp_str;
+            version << " " << std::string(sp_str);
         }
         return version.str();
 #else
