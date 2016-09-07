@@ -1,5 +1,5 @@
 /** @file
-    @brief Header
+    @brief Implementation
 
     @date 2016
 
@@ -23,11 +23,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef INCLUDED_Utilities_h_GUID_B7AFDBC8_F46B_4324_9F14_9D61E715A53A
-#define INCLUDED_Utilities_h_GUID_B7AFDBC8_F46B_4324_9F14_9D61E715A53A
-
 // Internal Includes
-// - none
+#include <osvr/SysInfo/Export.h>
 
 // Library/third-party includes
 // - none
@@ -40,7 +37,7 @@
 namespace osvr {
 namespace sysinfo {
 
-inline std::string to_string(const std::wstring& s)
+OSVR_SYSINFO_EXPORT std::string to_string(const std::wstring& s)
 {
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
     return converter.to_bytes(s);
@@ -48,6 +45,4 @@ inline std::string to_string(const std::wstring& s)
 
 } // namespace sysinfo
 } // namespace osvr
-
-#endif // INCLUDED_Utilities_h_GUID_B7AFDBC8_F46B_4324_9F14_9D61E715A53A
 

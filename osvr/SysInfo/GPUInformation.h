@@ -27,7 +27,7 @@
 #define INCLUDED_GPUInformation_h_GUID_D3D4A2D4_40F5_4FAE_918D_0F6E0794B53F
 
 // Internal Includes
-// - none
+#include <osvr/SysInfo/Export.h>
 
 // Library/third-party includes
 // - none

@@ -23,37 +23,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef INCLUDED_ProcessorInformation_h_GUID_5860F7FE_AA29_4629_92D6_629C8DDF9CF0
-#define INCLUDED_ProcessorInformation_h_GUID_5860F7FE_AA29_4629_92D6_629C8DDF9CF0
+#ifndef INCLUDED_MemoryInformation_h_GUID_5F47375A_FE5C_46C3_934A_F8C46A7F36CC
+#define INCLUDED_MemoryInformation_h_GUID_5F47375A_FE5C_46C3_934A_F8C46A7F36CC
 
 // Internal Includes
-// - none
+#include <osvr/SysInfo/Export.h>
 
 // Library/third-party includes
 // - none
 
 // Standard includes
-#include <iostream>
+#include <cstdint>
 
 namespace osvr {
 namespace sysinfo {
 
-struct CPUInformation {
-    // TODO
-};
-
-inline CPUInformation getCPUInformation()
-{
-    // TODO
-}
-
-inline std::ostream& operator<<(std::ostream& ostr, CPUInformation)
-{
-    // TODO
-}
+/**
+ * @brief Returns the total amount of memory available to the operating system
+ * in megabytes.
+ */
+OSVR_SYSINFO_EXPORT uint64_t getTotalMemory();
 
 } // namespace sysinfo
 } // namespace osvr
 
-#endif // INCLUDED_ProcessorInformation_h_GUID_5860F7FE_AA29_4629_92D6_629C8DDF9CF0
+#endif // INCLUDED_MemoryInformation_h_GUID_5F47375A_FE5C_46C3_934A_F8C46A7F36CC
 

@@ -1,5 +1,5 @@
 /** @file
-    @brief Header
+    @brief Implementation
 
     @date 2016
 
@@ -23,11 +23,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef INCLUDED_MemoryInformation_h_GUID_5F47375A_FE5C_46C3_934A_F8C46A7F36CC
-#define INCLUDED_MemoryInformation_h_GUID_5F47375A_FE5C_46C3_934A_F8C46A7F36CC
-
 // Internal Includes
-#include "Platform.h"
+#include <osvr/SysInfo/MemoryInformation.h>
+#include <osvr/SysInfo/Platform.h>
 
 // Library/third-party includes
 #if defined(OSVR_WINDOWS)
@@ -49,7 +47,7 @@ namespace sysinfo {
  * @brief Returns the total amount of memory available to the operating system
  * in megabytes.
  */
-inline uint64_t getTotalMemory()
+uint64_t getTotalMemory()
 {
 #if defined(OSVR_WINDOWS)
     MEMORYSTATUSEX statex;
@@ -76,6 +74,4 @@ inline uint64_t getTotalMemory()
 
 } // namespace sysinfo
 } // namespace osvr
-
-#endif // INCLUDED_MemoryInformation_h_GUID_5F47375A_FE5C_46C3_934A_F8C46A7F36CC
 

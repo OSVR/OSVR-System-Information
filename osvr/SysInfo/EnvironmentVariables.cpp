@@ -1,5 +1,5 @@
 /** @file
-    @brief Header
+    @brief Implementation
 
     @date 2016
 
@@ -23,10 +23,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef INCLUDED_EnvironmentVariables_h_GUID_BE501038_D072_4C13_8BD4_A06AB9243522
-#define INCLUDED_EnvironmentVariables_h_GUID_BE501038_D072_4C13_8BD4_A06AB9243522
-
 // Internal Includes
+#include "EnvironmentVariables.h"
 #include "Platform.h"
 
 // Library/third-party includes
@@ -50,9 +48,7 @@ extern char **environ;
 namespace osvr {
 namespace sysinfo {
 
-using EnvironmentVariablesList = std::map<std::string, std::string>;
-
-inline EnvironmentVariablesList getEnvironmentVariables()
+EnvironmentVariablesList getEnvironmentVariables()
 {
     std::vector<std::string> strs;
 
@@ -104,6 +100,4 @@ inline EnvironmentVariablesList getEnvironmentVariables()
 
 } // end namespace sysinfo
 } // end namespace osvr
-
-#endif // INCLUDED_EnvironmentVariables_h_GUID_BE501038_D072_4C13_8BD4_A06AB9243522
 

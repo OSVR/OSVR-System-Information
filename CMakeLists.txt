@@ -28,11 +28,19 @@ include(GNUInstallDirs)
 #
 add_subdirectory(vendor)
 
+#
+# OSVR SysInfo
+#
+add_subdirectory(osvr)
+
 include(CTest)
+enable_testing()
+
 if(BUILD_TESTS)
-	enable_testing()
 #	add_subdirectory(test)
 endif()
 
-add_subdirectory(src)
+if(BUILD_APPS)
+	add_subdirectory(apps)
+endif()
 
