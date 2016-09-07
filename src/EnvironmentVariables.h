@@ -36,7 +36,6 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <iostream> // debugging
 
 // Platform-specific includes
 #if defined(OSVR_WINDOWS)
@@ -61,17 +60,11 @@ inline EnvironmentVariablesList getEnvironmentVariables()
     auto envstrs = GetEnvironmentStrings();
     auto envvars = envstrs;
     while (*envvars != '\0') {
-        auto str = std::string(envvars);
-        std::cerr << " -- Adding [" << str << "]..." << std::endl;
-        strs.emplace_back(std::move(str));
-        std::cerr << " -- Advancing envvars by " << strlen(envvars) << "." << std::endl;
+        strs.emplace_back(std::string(envvars));
         envvars += strlen(envvars);
         envvars++;
-        std::cerr << " -- Top of loop char = " << (*envvars) << std::endl;
     }
-    std::cerr << " -- Freeing environment variables." << std::endl;
     FreeEnvironmentStrings(envstrs);
-    std::cerr << " -- Freed environment variables." << std::endl;
 #elif defined(OSVR_POSIX)
     auto envvars = environ;
     while (*envvars) {
@@ -82,14 +75,9 @@ inline EnvironmentVariablesList getEnvironmentVariables()
 #error "Unsupported platform."
 #endif
 
-    std::cerr << " -- Instantiating env_vars..." << std::flush;
     EnvironmentVariablesList env_vars;
-    std::cerr << "done!" << std::endl;
 
-    std::cerr << " -- We have " << strs.size() << " environment variables to parse." << std::endl;
     for (auto str : strs) {
-        std::cerr << " -- Splitting [" << str << "]..." << std::endl;
-
         if (str.empty())
             continue;
 

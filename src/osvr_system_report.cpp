@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
     // TODO get SteamVR paths (vrpathreg) and info
     // TODO get webvr and browser information (see email from Yuval)
 
-    //std::cout << report;
+    std::cout << report;
 
     return 0;
 }
