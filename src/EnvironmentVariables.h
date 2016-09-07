@@ -60,7 +60,9 @@ inline EnvironmentVariablesList getEnvironmentVariables()
 #if defined(OSVR_WINDOWS)
     auto envvars = GetEnvironmentStrings();
     while (*envvars != '\0') {
-        strs.emplace_back(std::string(envvars));
+        auto str = std::string(envvars);
+        std::cout << " -- Adding [" << str << "]..." << std::endl;
+        strs.emplace_back(std::move(str));
         envvars += strlen(envvars);
         envvars++;
     }
@@ -78,7 +80,7 @@ inline EnvironmentVariablesList getEnvironmentVariables()
     EnvironmentVariablesList env_vars;
 
     for (auto str : strs) {
-        std::cout << " -- Working on [" << str << "]..." << std::endl;
+        std::cout << " -- Splitting [" << str << "]..." << std::endl;
 
         if (str.empty())
             continue;
