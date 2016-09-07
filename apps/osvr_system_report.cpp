@@ -1,5 +1,5 @@
 /** @file
-    @brief Header
+    @brief Utility to generate system report.
 
     @date 2016
 
@@ -27,6 +27,7 @@
 #include "EnvironmentVariables.h"
 #include "OperatingSystem.h"
 #include "MemoryInformation.h"
+#include "USBInformation.h"
 
 // Library/third-party includes
 #include <json/value.h>
@@ -93,6 +94,23 @@ int main(int argc, char* argv[])
     }
     std::cout << "done!" << std::endl;
     std::cout << " -- Found " << env_vars.size() << " environment variables." << std::endl;
+
+    std::cout << "Enumerating USB devices..." << std::flush;
+    const auto usb_devices = getUSBDevices();
+    Json::Value::UInt index = 0;
+    for (const auto& usb_device : usb_devices) {
+        report["usbDevices"][index]["vendor"] = usb_device.vendorId;
+        report["usbDevices"][index]["product"] = usb_device.productId;
+        report["usbDevices"][index]["busNumber"] = usb_device.busNumber;
+        report["usbDevices"][index]["address"] = usb_device.address;
+        report["usbDevices"][index]["path"] = usb_device.getPathString();
+        report["usbDevices"][index]["manufacturerName"] = usb_device.manufacturerName;
+        report["usbDevices"][index]["productName"] = usb_device.productName;
+        report["usbDevices"][index]["serialNumber"] = usb_device.serialNumber;
+        ++index;
+    }
+    std::cout << "done!" << std::endl;
+    std::cout << " -- Found " << usb_devices.size() << " USB devices." << std::endl;
 
     // TODO Driver store: pnputil -e
     // TODO CDC driver: dir /s "%systemroot%\system32\DriverStore\FileRepository\osvr_cdc.inf*"

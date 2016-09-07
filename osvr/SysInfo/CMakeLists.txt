@@ -2,17 +2,21 @@
 # OSVR SysInfo library
 #
 
+find_package(Libusb1 REQUIRED)
+
 set(_osvrSysInfo_headers
 	EnvironmentVariables.h
 	MemoryInformation.h
 	OperatingSystem.h
 	Platform.h
+	USBInformation.h
 	Utilities.h)
 
 set(_osvrSysInfo_src
 	EnvironmentVariables.cpp
 	MemoryInformation.cpp
 	OperatingSystem.cpp
+	USBInformation.cpp
 	Utilities.cpp)
 
 set(_osvrSysInfo_deps)
@@ -21,25 +25,29 @@ set(_osvrSysInfo_deps)
 add_library(osvrSysInfo
 	SHARED ${_osvrSysInfo_src} ${_osvrSysInfo_headers})
 target_link_libraries(osvrSysInfo
-	PRIVATE ${_osvrSysInfo_deps})
+	PRIVATE ${_osvrSysInfo_deps}
+	${LIBUSB1_LIBRARIES})
 target_include_directories(osvrSysInfo
 	PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_CURRENT_BINARY_DIR}
 	${CMAKE_BINARY_DIR}
-	${CMAKE_SOURCE_DIR})
+	${CMAKE_SOURCE_DIR}
+	${LIBUSB1_INCLUDE_DIRS})
 
 # Static library
 add_library(osvrSysInfo_static
 	STATIC ${_osvrSysInfo_src} ${_osvrSysInfo_headers})
 target_link_libraries(osvrSysInfo_static
-	PRIVATE ${_osvrSysInfo_deps})
+	PRIVATE ${_osvrSysInfo_deps}
+	${LIBUSB1_LIBRARIES})
 target_include_directories(osvrSysInfo_static
 	PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_CURRENT_BINARY_DIR}
 	${CMAKE_BINARY_DIR}
-	${CMAKE_SOURCE_DIR})
+	${CMAKE_SOURCE_DIR}
+	${LIBUSB1_INCLUDE_DIRS})
 
 set_property(TARGET osvrSysInfo
 	PROPERTY POSITION_INDEPENDENT_CODE 1)
