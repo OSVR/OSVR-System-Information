@@ -58,7 +58,8 @@ inline EnvironmentVariablesList getEnvironmentVariables()
     std::vector<std::string> strs;
 
 #if defined(OSVR_WINDOWS)
-    auto envvars = GetEnvironmentStrings();
+    auto envstrs = GetEnvironmentStrings();
+    auto envvars = envstrs;
     while (*envvars != '\0') {
         auto str = std::string(envvars);
         std::cerr << " -- Adding [" << str << "]..." << std::endl;
@@ -69,7 +70,7 @@ inline EnvironmentVariablesList getEnvironmentVariables()
         std::cerr << " -- Top of loop char = " << (*envvars) << std::endl;
     }
     std::cerr << " -- Freeing environment variables." << std::endl;
-    FreeEnvironmentStrings(envvars);
+    FreeEnvironmentStrings(envstrs);
     std::cerr << " -- Freed environment variables." << std::endl;
 #elif defined(OSVR_POSIX)
     auto envvars = environ;
