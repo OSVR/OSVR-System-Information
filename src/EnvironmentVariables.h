@@ -81,10 +81,13 @@ inline EnvironmentVariablesList getEnvironmentVariables()
 #error "Unsupported platform."
 #endif
 
+    std::cerr << " -- Instantiating env_vars..." << std::flush;
     EnvironmentVariablesList env_vars;
+    std::cerr << "done!" << std::endl;
 
+    std::cerr << " -- We have " << strs.size() << " environment variables to parse." << std::endl;
     for (auto str : strs) {
-        std::cout << " -- Splitting [" << str << "]..." << std::endl;
+        std::cerr << " -- Splitting [" << str << "]..." << std::endl;
 
         if (str.empty())
             continue;
