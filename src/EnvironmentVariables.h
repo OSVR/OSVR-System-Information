@@ -59,6 +59,7 @@ inline EnvironmentVariablesList getEnvironmentVariables()
 
 #if defined(OSVR_WINDOWS)
     auto envvars = GetEnvironmentStrings();
+    std::cout << "Environment variables:\n" << envvars << "\n" << std::endl;
     while (*envvars != '\0') {
         auto str = std::string(envvars);
         std::cout << " -- Adding [" << str << "]..." << std::endl;
