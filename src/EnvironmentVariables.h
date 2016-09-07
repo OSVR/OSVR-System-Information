@@ -59,15 +59,18 @@ inline EnvironmentVariablesList getEnvironmentVariables()
 
 #if defined(OSVR_WINDOWS)
     auto envvars = GetEnvironmentStrings();
-    std::cout << "Environment variables:\n" << envvars << "\n" << std::endl;
     while (*envvars != '\0') {
         auto str = std::string(envvars);
-        std::cout << " -- Adding [" << str << "]..." << std::endl;
+        std::cerr << " -- Adding [" << str << "]..." << std::endl;
         strs.emplace_back(std::move(str));
+        std::cerr << " -- Advancing envvars by " << strlen(envvars) << "." << std::endl;
         envvars += strlen(envvars);
         envvars++;
+        std::cerr << " -- Top of loop char = " << (*envvars) << std::endl;
     }
+    std::cerr << " -- Freeing environment variables." << std::endl;
     FreeEnvironmentStrings(envvars);
+    std::cerr << " -- Freed environment variables." << std::endl;
 #elif defined(OSVR_POSIX)
     auto envvars = environ;
     while (*envvars) {
