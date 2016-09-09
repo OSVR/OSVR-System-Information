@@ -17,3 +17,20 @@ target_include_directories(osvr_system_report
 add_test(NAME osvr_system_report_test
 	COMMAND osvr_system_report)
 
+#
+# osvr_doctor application
+#
+
+add_executable(osvr_doctor
+	osvr_doctor.cpp)
+
+target_link_libraries(osvr_doctor
+	osvr::osvrSysInfo_static)
+
+#target_include_directories(osvr_doctor
+#	SYSTEM PRIVATE)
+
+# Run osvr_doctor when we execute tests
+add_test(NAME osvr_doctor_test
+	COMMAND osvr_doctor)
+
