@@ -34,6 +34,7 @@
 #include <json/writer.h>
 
 // Standard includes
+#include <ctime>
 #include <iostream>
 
 inline void usage()
@@ -69,8 +70,11 @@ int main(int argc, char* argv[])
     std::cout << "If you remove any portions due to privacy concerns, please clearly note this both in the edited log file as well as the body of the support email." << std::endl;
     std::cout << std::endl;
 
-
-    // TODO add timestamp to report
+    std::time_t now = std::time(nullptr);
+    char mbstr[100];
+    if (std::strftime(mbstr, sizeof(mbstr), "%FT%TZ", std::localtime(&now))) {
+        report["timestamp"] = mbstr;
+    }
 
     std::cout << "Collecting operating system information..." << std::flush;
     const auto os_name = getOSName();
