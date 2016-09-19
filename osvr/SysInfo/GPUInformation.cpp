@@ -1,5 +1,5 @@
 /** @file
-    @brief Header
+    @brief Implementation
 
     @date 2016
 
@@ -23,37 +23,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef INCLUDED_GPUInformation_h_GUID_D3D4A2D4_40F5_4FAE_918D_0F6E0794B53F
-#define INCLUDED_GPUInformation_h_GUID_D3D4A2D4_40F5_4FAE_918D_0F6E0794B53F
-
 // Internal Includes
-#include <osvr/SysInfo/Export.h>
+#include <osvr/SysInfo/GPUInformation.h>
 
 // Library/third-party includes
 // - none
 
 // Standard includes
-#include <string>
-#include <vector>
+// - none
 
 namespace osvr {
 namespace sysinfo {
 
-struct GPUInfo {
-    std::string vendor;
-    std::string model;
-    uint64_t memory;
-};
-
 inline std::vector<GPUInfo> getGPUInfo()
 {
-    std::vector<GPUInfo> gpu_info_list;
     // TODO
-    return gpu_info_list;
 }
 
 } // namespace sysinfo
 } // namespace osvr
-
-#endif // INCLUDED_GPUInformation_h_GUID_D3D4A2D4_40F5_4FAE_918D_0F6E0794B53F
 

@@ -23,8 +23,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef INCLUDED_GPUInformation_h_GUID_D3D4A2D4_40F5_4FAE_918D_0F6E0794B53F
-#define INCLUDED_GPUInformation_h_GUID_D3D4A2D4_40F5_4FAE_918D_0F6E0794B53F
+#ifndef INCLUDED_OSVRHDKInformation_h_GUID_E5876805_90FF_4C47_9A9D_053E9870D32B
+#define INCLUDED_OSVRHDKInformation_h_GUID_E5876805_90FF_4C47_9A9D_053E9870D32B
 
 // Internal Includes
 #include <osvr/SysInfo/Export.h>
@@ -34,26 +34,25 @@
 
 // Standard includes
 #include <string>
-#include <vector>
 
 namespace osvr {
 namespace sysinfo {
 
-struct GPUInfo {
-    std::string vendor;
-    std::string model;
-    uint64_t memory;
+// TODO get device manager notes about OSVR devices (Windows only)
+// TODO get HDK hardware and firmware versions
+// TODO get IR camera firmware veresion
+
+struct OSVR_SYSINFO_EXPORT HDKFirmwareInfo {
+    std::string version;
+    std::string date;
+    std::string trackerVersion;
+    std::string detailedInformation;
 };
 
-inline std::vector<GPUInfo> getGPUInfo()
-{
-    std::vector<GPUInfo> gpu_info_list;
-    // TODO
-    return gpu_info_list;
-}
+OSVR_SYSINFO_EXPORT HDKFirmwareInfo getHDKFirmwareInfo();
 
 } // namespace sysinfo
 } // namespace osvr
 
-#endif // INCLUDED_GPUInformation_h_GUID_D3D4A2D4_40F5_4FAE_918D_0F6E0794B53F
+#endif // INCLUDED_OSVRHDKInformation_h_GUID_E5876805_90FF_4C47_9A9D_053E9870D32B
 

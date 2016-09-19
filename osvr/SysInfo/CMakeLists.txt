@@ -2,8 +2,6 @@
 # OSVR SysInfo library
 #
 
-find_package(Libusb1 REQUIRED)
-
 set(_osvrSysInfo_headers
 	EnvironmentVariables.h
 	MemoryInformation.h

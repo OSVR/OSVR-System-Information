@@ -15,6 +15,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #
 option(BUILD_APPS "Build applications that use osvrDisplay." ON)
 option(BUILD_TESTS "Build test programs and unit tests." ON)
+option(BUILD_HEADER_DEPENDENCY_TESTS "Should we add targets to ensure that every public header compiles cleanly on its own? Increases number of targets greatly..." ON)
 
 #
 # Default installation directories
@@ -25,6 +26,8 @@ include(GNUInstallDirs)
 #
 # Dependencies
 #
+
+find_package(Libusb1 REQUIRED)
 
 #
 # Third-party libraries
@@ -40,7 +43,8 @@ include(CTest)
 enable_testing()
 
 if(BUILD_TESTS)
-#	add_subdirectory(test)
+	set(HEADER_BASE ${CMAKE_SOURCE_DIR}/osvr)
+	add_subdirectory(test)
 endif()
 
 if(BUILD_APPS)

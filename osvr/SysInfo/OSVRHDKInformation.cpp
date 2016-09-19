@@ -1,5 +1,5 @@
 /** @file
-    @brief Header
+    @brief Implementation
 
     @date 2016
 
@@ -23,37 +23,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef INCLUDED_GPUInformation_h_GUID_D3D4A2D4_40F5_4FAE_918D_0F6E0794B53F
-#define INCLUDED_GPUInformation_h_GUID_D3D4A2D4_40F5_4FAE_918D_0F6E0794B53F
-
 // Internal Includes
-#include <osvr/SysInfo/Export.h>
-
-// Library/third-party includes
 // - none
 
+// Library/third-party includes
+#include <osvr/USBSerial/USBSerialDevInfo.h>
+#include <boost/asio/serial_port.hpp>
+
 // Standard includes
-#include <string>
-#include <vector>
+// - none
 
 namespace osvr {
 namespace sysinfo {
 
-struct GPUInfo {
-    std::string vendor;
-    std::string model;
-    uint64_t memory;
-};
+// TODO get device manager notes about OSVR devices (Windows only)
+// TODO get HDK hardware and firmware versions
+// TODO get IR camera firmware veresion
 
-inline std::vector<GPUInfo> getGPUInfo()
+HDKFirmwareInfo getHDKFirmwareInfo()
 {
-    std::vector<GPUInfo> gpu_info_list;
-    // TODO
-    return gpu_info_list;
+    HDKFirmwareInfo info;
+
+    const static uint8_t OSVR_HDK_VID = 0x1532;
+    const static uint8_t OSVR_HDK_PID = 0x0b00;
+
+    auto usb_devices = getSerialDeviceList(OSVR_HDK_VID, OSVR_HDK_PID);
+    if (usb_devices.empty())
+        return info;
+
+    
 }
 
 } // namespace sysinfo
 } // namespace osvr
-
-#endif // INCLUDED_GPUInformation_h_GUID_D3D4A2D4_40F5_4FAE_918D_0F6E0794B53F
 

@@ -44,13 +44,17 @@ struct CPUInformation {
 
 inline CPUInformation getCPUInformation()
 {
+    CPUInformation cpuinfo;
     // TODO
+    return cpuinfo;
 }
 
+/*
 inline std::ostream& operator<<(std::ostream& ostr, CPUInformation)
 {
     // TODO
 }
+*/
 
 } // namespace sysinfo
 } // namespace osvr
