@@ -24,14 +24,16 @@
 // limitations under the License.
 
 // Internal Includes
-// - none
+#include <osvr/SysInfo/OSVRHDKInformation.h>
+#include <osvr/SysInfo/SerialPort.h>
 
 // Library/third-party includes
-#include <osvr/USBSerial/USBSerialDevInfo.h>
-#include <boost/asio/serial_port.hpp>
+#include <osvr/USBSerial/USBSerialEnum.h>
+#include <boost/optional.hpp>
 
 // Standard includes
-// - none
+#include <string>
+#include <sstream>
 
 namespace osvr {
 namespace sysinfo {
@@ -40,18 +42,36 @@ namespace sysinfo {
 // TODO get HDK hardware and firmware versions
 // TODO get IR camera firmware veresion
 
-HDKFirmwareInfo getHDKFirmwareInfo()
+boost::optional<HDKFirmwareInfo> getHDKFirmwareInfo()
 {
-    HDKFirmwareInfo info;
+    const static uint16_t OSVR_HDK_VID = 0x1532;
+    const static uint16_t OSVR_HDK_PID = 0x0b00;
 
-    const static uint8_t OSVR_HDK_VID = 0x1532;
-    const static uint8_t OSVR_HDK_PID = 0x0b00;
+    for (auto &&usb_device : osvr::usbserial::enumerate(OSVR_HDK_VID, OSVR_HDK_PID)) {
+        // Version 1.96  Aug 12 2016
+        // Tracker:1.8.3.402
+        SerialPort serial_port { usb_device.getPlatformSpecificPath(), 9600 };
+        serial_port.writeLine("#?v");
+        auto echoed_input = serial_port.readStringUntil();
+        auto version_date_str = serial_port.readStringUntil();
+        auto tracker_str = serial_port.readStringUntil();
 
-    auto usb_devices = getSerialDeviceList(OSVR_HDK_VID, OSVR_HDK_PID);
-    if (usb_devices.empty())
+        HDKFirmwareInfo info;
+        std::string junk; // to store garbage we don't care about
+        std::string month, day, year;
+
+        std::stringstream ss;
+        ss << version_date_str;
+        ss >> junk; // "Version"
+        ss >> info.firmwareVersion;
+        ss >> month >> day >> year;
+        info.date = month + " " + day + " " + year;
+        info.trackerVersion = tracker_str.substr(tracker_str.find(":") + 1);
+
         return info;
+    }
 
-    
+    return boost::none;
 }
 
 } // namespace sysinfo

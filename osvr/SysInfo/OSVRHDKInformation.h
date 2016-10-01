@@ -30,7 +30,7 @@
 #include <osvr/SysInfo/Export.h>
 
 // Library/third-party includes
-// - none
+#include <boost/optional.hpp>
 
 // Standard includes
 #include <string>
@@ -43,13 +43,13 @@ namespace sysinfo {
 // TODO get IR camera firmware veresion
 
 struct OSVR_SYSINFO_EXPORT HDKFirmwareInfo {
-    std::string version;
+    std::string firmwareVersion;
     std::string date;
     std::string trackerVersion;
     std::string detailedInformation;
 };
 
-OSVR_SYSINFO_EXPORT HDKFirmwareInfo getHDKFirmwareInfo();
+OSVR_SYSINFO_EXPORT boost::optional<HDKFirmwareInfo> getHDKFirmwareInfo();
 
 } // namespace sysinfo
 } // namespace osvr

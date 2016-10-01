@@ -34,3 +34,22 @@ target_link_libraries(osvr_doctor
 add_test(NAME osvr_doctor_test
 	COMMAND osvr_doctor)
 
+#
+# osvr_hdk application
+#
+
+add_executable(osvr_hdk
+	osvr_hdk.cpp)
+
+target_link_libraries(osvr_hdk
+	osvr::osvrSysInfo_static
+	osvr::osvrUSBSerial
+	Boost::program_options)
+
+#target_include_directories(osvr_hdk
+#	SYSTEM PRIVATE)
+
+# Run osvr_hdk when we execute tests
+add_test(NAME osvr_hdk_test
+	COMMAND osvr_hdk)
+

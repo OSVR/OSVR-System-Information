@@ -24,10 +24,11 @@
 // limitations under the License.
 
 // Internal Includes
-#include "EnvironmentVariables.h"
-#include "OperatingSystem.h"
-#include "MemoryInformation.h"
-#include "USBInformation.h"
+#include <osvr/SysInfo/EnvironmentVariables.h>
+#include <osvr/SysInfo/MemoryInformation.h>
+#include <osvr/SysInfo/OperatingSystem.h>
+#include <osvr/SysInfo/USBInformation.h>
+#include <osvr/SysInfo/OSVRHDKInformation.h>
 
 // Library/third-party includes
 #include <json/value.h>
@@ -115,6 +116,21 @@ int main(int argc, char* argv[])
     }
     std::cout << "done!" << std::endl;
     std::cout << " -- Found " << usb_devices.size() << " USB devices." << std::endl;
+
+    std::cout << "Getting OSVR HDK firmware version information..." << std::flush;
+    const auto firmware_info = getHDKFirmwareInfo();
+    if (firmware_info) {
+        std::cout << "done!" << std::endl;
+        std::cout << " -- Firmware version: " << firmware_info->firmwareVersion << "." << std::endl;
+        report["hdk"]["firmwareVersion"] = firmware_info->firmwareVersion;
+        report["hdk"]["date"] = firmware_info->date;
+        report["hdk"]["trackerVersion"] = firmware_info->trackerVersion;
+        report["hdk"]["detailedInformation"] = firmware_info->detailedInformation;
+    } else {
+        std::cout << "no HDK detected." << std::endl;
+    }
+
+
 
     // TODO Driver store: pnputil -e
     // TODO CDC driver: dir /s "%systemroot%\system32\DriverStore\FileRepository\osvr_cdc.inf*"

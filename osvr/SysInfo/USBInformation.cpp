@@ -31,6 +31,8 @@
 
 // Standard includes
 #include <cstdint>
+#include <exception>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -57,7 +59,17 @@ USBDevice::USBDevice(libusb_device* device)
         path.push_back(p[i]);
     }
 
-    auto handle = libusb_open_device_with_vid_pid(nullptr, vendorId, productId);
+    libusb_device_handle* handle = nullptr;
+    const auto ret_open = libusb_open(device, &handle);
+    if (ret_open == LIBUSB_ERROR_NO_MEM) {
+       throw std::runtime_error("Error allocating memory for libusb_open().");
+    } else if (ret_open == LIBUSB_ERROR_ACCESS) {
+       throw std::runtime_error("Insufficient permissions to open USB device. Try running as administrator or root.");
+    } else if (ret_open == LIBUSB_ERROR_NO_DEVICE) {
+       throw std::runtime_error("The device has been disconnected.");
+    } else if (ret_open != 0) {
+       throw std::runtime_error("Error opening USB device: " + std::to_string(ret_open));
+    }
 
     char str[128];
     if (libusb_get_string_descriptor_ascii(handle, desc.iManufacturer, (unsigned char*)str, 128) >= 0) {
@@ -95,6 +107,9 @@ std::vector<USBDevice> getUSBDevices()
     if (ret < 0)
         return {};
 
+    // Enable debug ouput
+    //libusb_set_debug(nullptr, LIBUSB_LOG_LEVEL_DEBUG);
+
     libusb_device** devs;
     const auto cnt = libusb_get_device_list(nullptr, &devs);
     if (cnt < 0)
@@ -103,9 +118,13 @@ std::vector<USBDevice> getUSBDevices()
     std::vector<USBDevice> usb_devices;
     int i = 0;
     libusb_device* dev = nullptr;
-    while ((dev = devs[i++]) != NULL) {
-        auto usb_device = USBDevice(dev);
-        usb_devices.push_back(usb_device);
+    while ((dev = devs[i++]) != nullptr) {
+        try {
+            auto usb_device = USBDevice(dev);
+            usb_devices.push_back(usb_device);
+        } catch (const std::exception& e) {
+            //std::cerr << "\nError reading USB device: " << e.what() << std::endl;
+        }
     }
 
     libusb_free_device_list(devs, 1);

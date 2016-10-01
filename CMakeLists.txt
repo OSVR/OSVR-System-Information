@@ -28,6 +28,8 @@ include(GNUInstallDirs)
 #
 
 find_package(Libusb1 REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system program_options)
+find_package(osvr REQUIRED)
 
 #
 # Third-party libraries

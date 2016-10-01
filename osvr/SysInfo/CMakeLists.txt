@@ -6,7 +6,9 @@ set(_osvrSysInfo_headers
 	EnvironmentVariables.h
 	MemoryInformation.h
 	OperatingSystem.h
+	OSVRHDKInformation.h
 	Platform.h
+	SerialPort.h
 	USBInformation.h
 	Utilities.h)
 
@@ -14,6 +16,8 @@ set(_osvrSysInfo_src
 	EnvironmentVariables.cpp
 	MemoryInformation.cpp
 	OperatingSystem.cpp
+	OSVRHDKInformation.cpp
+	SerialPort.cpp
 	USBInformation.cpp
 	Utilities.cpp)
 
@@ -23,8 +27,12 @@ set(_osvrSysInfo_deps)
 add_library(osvrSysInfo
 	SHARED ${_osvrSysInfo_src} ${_osvrSysInfo_headers})
 target_link_libraries(osvrSysInfo
-	PRIVATE ${_osvrSysInfo_deps}
-	${LIBUSB1_LIBRARIES})
+	PRIVATE
+	${_osvrSysInfo_deps}
+	${LIBUSB1_LIBRARIES}
+	osvr::osvrUSBSerial
+	PUBLIC
+	Boost::system)
 target_include_directories(osvrSysInfo
 	PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
@@ -37,8 +45,12 @@ target_include_directories(osvrSysInfo
 add_library(osvrSysInfo_static
 	STATIC ${_osvrSysInfo_src} ${_osvrSysInfo_headers})
 target_link_libraries(osvrSysInfo_static
-	PRIVATE ${_osvrSysInfo_deps}
-	${LIBUSB1_LIBRARIES})
+	PRIVATE
+	${_osvrSysInfo_deps}
+	${LIBUSB1_LIBRARIES}
+	osvr::osvrUSBSerial
+	PUBLIC
+	Boost::system)
 target_include_directories(osvrSysInfo_static
 	PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
