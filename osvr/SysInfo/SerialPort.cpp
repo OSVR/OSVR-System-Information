@@ -232,10 +232,10 @@ void SerialPort::readCompleted(const boost::system::error_code& error, const siz
 
     // In case a asynchronous operation is cancelled due to a timeout,
     // each OS seems to have its way to react.
-#ifdef OSVR_WINDOWS
+#if defined(OSVR_WINDOWS)
     if (error.value() == 995)
         return; // Windows spits out error 995
-#elif OSVR_MACOSX
+#elif defined(OSVR_MACOSX)
     if (error.value() == 45) {
         // Bug on OS X, it might be necessary to repeat the setup
         // http://osdir.com/ml/lib.boost.asio.user/2008-08/msg00004.html
