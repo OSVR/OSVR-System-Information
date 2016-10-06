@@ -21,6 +21,10 @@
 // - none
 
 // Library/third-party includes
+#include <osvr/Util/PlatformConfig.h>
+#ifdef OSVR_WINDOWS
+#include <SDKDDKVer.h>>
+#endif
 #include <boost/asio.hpp>
 #include <boost/utility.hpp>
 

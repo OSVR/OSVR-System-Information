@@ -58,6 +58,7 @@ bool detect_usb_device(const std::vector<osvr::sysinfo::USBDevice>& usb_devices,
 bool detect_osvr_usb_devices()
 {
     const auto usb_devices = osvr::sysinfo::getUSBDevices();
+
     bool all_okay = true;
 
     struct USBDeviceNeedle {

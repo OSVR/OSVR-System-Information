@@ -68,7 +68,8 @@ USBDevice::USBDevice(libusb_device* device)
     } else if (ret_open == LIBUSB_ERROR_NO_DEVICE) {
        throw std::runtime_error("The device has been disconnected.");
     } else if (ret_open != 0) {
-       throw std::runtime_error("Error opening USB device: " + std::to_string(ret_open));
+       //throw std::runtime_error("Error opening USB device: " + std::to_string(ret_open));
+       return;
     }
 
     char str[128];
@@ -123,7 +124,7 @@ std::vector<USBDevice> getUSBDevices()
             auto usb_device = USBDevice(dev);
             usb_devices.push_back(usb_device);
         } catch (const std::exception& e) {
-            //std::cerr << "\nError reading USB device: " << e.what() << std::endl;
+            std::cerr << "\nError reading USB device: " << e.what() << std::endl;
         }
     }
 
