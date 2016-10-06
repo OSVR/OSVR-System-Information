@@ -35,6 +35,53 @@
 // Standard includes
 #include <iostream>
 
+bool detect_usb_device(const std::vector<osvr::sysinfo::USBDevice>& usb_devices, const std::string& name, const int vendor_id, const int product_id)
+{
+    std::cout << "Searching for " << name << "..." << std::flush;
+    bool found = false;
+    for (const auto& usb_device : usb_devices) {
+        if (usb_device.vendorId == vendor_id && usb_device.productId == product_id) {
+            found = true;
+            std::cout << "found!" << std::endl;
+            break;
+        }
+    }
+
+    if (!found) {
+        std::cout << "not found." << std::endl;
+    }
+
+    return found;
+}
+
+
+bool detect_osvr_usb_devices()
+{
+    const auto usb_devices = osvr::sysinfo::getUSBDevices();
+    bool all_okay = true;
+
+    struct USBDeviceNeedle {
+        std::string name;
+        int vendor_id;
+        int product_id;
+    };
+
+    std::vector<USBDeviceNeedle> usb_device_needles {
+        { "OSVR belt box USB hub", 0x05e3, 0x0610 },
+        { "OSVR belt box audio", 0x0572, 0x1806 },
+        { "OSVR HDK USB hub", 0x0424, 0x2134 },
+        { "OSVR HDK processor", 0x1532, 0x0b00 },
+        { "OSVR IR tracking camera", 0x0bda, 0x57e8 }
+    };
+
+    for (const auto& needle : usb_device_needles) {
+        if (!detect_usb_device(usb_devices, needle.name, needle.vendor_id, needle.product_id))
+            all_okay = false;
+    }
+
+    return all_okay;
+}
+
 int main(int argc, char* argv[])
 {
     using std::cout;
@@ -44,89 +91,10 @@ int main(int argc, char* argv[])
 
     bool all_okay = true;
 
-    const auto usb_devices = getUSBDevices();
-
-    std::cout << "Searching for OSVR HDK..." << std::flush;
-    bool found = false;
-    for (const auto& usb_device : usb_devices) {
-        if (usb_device.vendorId == 0x1532 && usb_device.productId == 0x0b00) {
-            found = true;
-            std::cout << "found!" << std::endl;
-            break;
-        }
-    }
-
-    if (!found) {
-        std::cout << "not found." << std::endl;
+    if (!detect_osvr_usb_devices())
         all_okay = false;
-    }
 
 
-    std::cout << "Searching for OSVR IR camera..." << std::flush;
-    found = false;
-    for (const auto& usb_device : usb_devices) {
-        if (usb_device.vendorId == 0xbda && usb_device.productId == 0x57e8) {
-            found = true;
-            std::cout << "found!" << std::endl;
-            break;
-        }
-    }
-
-    if (!found) {
-        std::cout << "not found." << std::endl;
-        all_okay = false;
-    }
-
-
-
-
-    // TODO Driver store: pnputil -e
-    // TODO CDC driver: dir /s "%systemroot%\system32\DriverStore\FileRepository\osvr_cdc.inf*"
-    // TODO DFU driver: dir /s "%systemroot%\system32\DriverStore\FileRepository\atmel_usb_dfu.inf*"
-
-    // TODO SetupAPI - at least one will fail, that's OK:
-    //   "%SystemRoot%\setupapi.log"
-    //   "%SystemRoot%\inf\setupapi.app.log"
-    //   "%SystemRoot%\inf\setupapi.dev.log"
-
-    // TODO DPInst: "%SystemRoot%\dpinst.log"
-
-    // TODO Get all USB devices: "Get-WmiObject -class Win32_PnPEntity -namespace 'root\CIMV2' | where {$_.DeviceID -like 'USB\*'} | select name,hardwareid,status,service,errordescription"
-    // TODO  Get all HID devices - should get one like HID\VID_1532&PID_0B00&REV_0100&MI_02
-    //   "Get-WmiObject -class Win32_PnPEntity -namespace 'root\CIMV2' | where {$_.DeviceID -like 'HID\*'} | select name,hardwareid,status,service,errordescription"
-    // TODO Get all monitors - should see SEN1019 (old firmware) or SVR1019 (new firmware)
-    //   "Get-WmiObject -class Win32_PnPEntity -namespace 'root\CIMV2' | where {$_.DeviceID -like 'MONITOR\*'} | select name,hardwareid,status,service,errordescription"
-
-    // TODO get signed driver data
-    //   "Get-WmiObject -class Win32_PnPSignedDriver -namespace 'root\CIMV2' | where {$_.HardwareID -like 'USB\VID_1532&PID_0B00*'} | Select -Property * -ExcludeProperty __*,SystemProperties"
-
-    // TODO This doozy gets the data that shows up in "Events" in a device manager properties dialog.
-    // HDK USB hardware ID 
-    //   "Get-WinEvent -FilterHashtable @{ProviderName=@('Microsoft-Windows-UserPnp','Microsoft-Windows-Kernel-PnP')}  | where {$_.Message.Contains('VID_1532&PID_0B00')} | select TimeCreated,Message | Sort-Object TimeCreated |fl"
-    // TODO Sensics unofficial and official monitor PNP hardware IDs
-    //   "Get-WinEvent -FilterHashtable @{ProviderName=@('Microsoft-Windows-UserPnp','Microsoft-Windows-Kernel-PnP')}  | where {$_.Message.Contains('DISPLAY\SVR') -or $_.Message.Contains('DISPLAY\SEN')} | select TimeCreated,Message | Sort-Object TimeCreated |fl"
-
-    // TODO direct mode info
-    // Direct Mode Vendor:	NVIDIA
-    // Direct Mode Version:	368.81
-
-    // TODO get list of displays and related info
-    // TODO get list of USB devices and related info (tree format)
-    // TODO zip up all relevant log files
-    // TODO zip up all relevant configuration files
-    // TODO get list of installed OSVR software and versions
-    // TODO get processor name and speed
-    // TODO get total RAM
-    // TODO get graphics card name and VRAM
-    // TODO get OSVR HDK info:
-    // TODO     - hardware version
-    // TODO     - firmware version
-    // TODO     - serial number
-    // TODO     - IR camera firmware version
-    // TODO get player info (gender, height, vision, etc.)
-    // TODO get version of SteamVR
-    // TODO get SteamVR paths (vrpathreg) and info
-    // TODO get webvr and browser information (see email from Yuval)
 
     if (all_okay) {
         std::cout << "\nWe didn't detect any problems.\n" << std::endl;
@@ -144,6 +112,4 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 }
-
-
 
