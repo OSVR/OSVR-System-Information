@@ -42,36 +42,75 @@ namespace sysinfo {
 // TODO get HDK hardware and firmware versions
 // TODO get IR camera firmware veresion
 
-boost::optional<HDKFirmwareInfo> getHDKFirmwareInfo()
+std::vector<std::string> retrieveHDKFirmwareVersion()
 {
+    std::vector<std::string> hdk_info;
+
     const static uint16_t OSVR_HDK_VID = 0x1532;
     const static uint16_t OSVR_HDK_PID = 0x0b00;
 
     for (auto &&usb_device : osvr::usbserial::enumerate(OSVR_HDK_VID, OSVR_HDK_PID)) {
+        // Example input:
+        //
         // Version 1.96  Aug 12 2016
         // Tracker:1.8.3.402
+        //
+        // Version 1.99 (RELEASE)  Nov 28 2016
+        // Tracker:1.10.0.453
+
         SerialPort serial_port { usb_device.getPlatformSpecificPath(), 9600 };
         serial_port.writeLine("#?v");
         auto echoed_input = serial_port.readStringUntil();
         auto version_date_str = serial_port.readStringUntil();
         auto tracker_str = serial_port.readStringUntil();
 
-        HDKFirmwareInfo info;
-        std::string junk; // to store garbage we don't care about
-        std::string month, day, year;
-
-        std::stringstream ss;
-        ss << version_date_str;
-        ss >> junk; // "Version"
-        ss >> info.firmwareVersion;
-        ss >> month >> day >> year;
-        info.date = month + " " + day + " " + year;
-        info.trackerVersion = tracker_str.substr(tracker_str.find(":") + 1);
-
-        return info;
+        hdk_info.push_back(version_date_str);
+        hdk_info.push_back(tracker_str);
+        break;
     }
 
-    return boost::none;
+    return hdk_info;
+}
+
+boost::optional<HDKFirmwareInfo> parseHDKFirmwareInfo(const std::vector<std::string>& hdk_info)
+{
+
+    if (hdk_info.size() != 2)
+        return boost::none;
+
+    // Example input:
+    //
+    // Version 1.96  Aug 12 2016
+    // Tracker:1.8.3.402
+    //
+    // Version 1.99 (RELEASE)  Nov 28 2016
+    // Tracker:1.10.0.453
+
+    HDKFirmwareInfo info;
+    std::string release_type = "RELEASE";
+    std::string junk; // to store garbage we don't care about
+    std::string month, day, year;
+
+    std::stringstream ss;
+    ss << hdk_info.at(0);
+    ss >> junk; // "Version"
+    ss >> info.firmwareVersion;
+    if (hdk_info.at(0).find("(") != std::string::npos) {
+        ss >> release_type;
+        release_type = release_type.substr(1, release_type.size() - 1);
+    }
+    info.releaseType = release_type;
+    ss >> month >> day >> year;
+    info.date = month + " " + day + " " + year;
+    info.trackerVersion = hdk_info.at(1).substr(hdk_info.at(1).find(":") + 1);
+
+    return info;
+}
+
+boost::optional<HDKFirmwareInfo> getHDKFirmwareInfo()
+{
+    const auto hdk_info = retrieveHDKFirmwareVersion();
+    return parseHDKFirmwareInfo(hdk_info);
 }
 
 } // namespace sysinfo

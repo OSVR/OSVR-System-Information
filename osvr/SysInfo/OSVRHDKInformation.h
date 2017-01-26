@@ -44,6 +44,7 @@ namespace sysinfo {
 
 struct OSVR_SYSINFO_EXPORT HDKFirmwareInfo {
     std::string firmwareVersion;
+    std::string releaseType;
     std::string date;
     std::string trackerVersion;
     std::string detailedInformation;
