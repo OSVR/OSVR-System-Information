@@ -13,9 +13,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #
 # Options
 #
-option(BUILD_APPS "Build applications that use osvrDisplay." ON)
-option(BUILD_TESTS "Build test programs and unit tests." ON)
-option(BUILD_HEADER_DEPENDENCY_TESTS "Should we add targets to ensure that every public header compiles cleanly on its own? Increases number of targets greatly..." ON)
+option(OSVR_SYSINFO_BUILD_APPS "Build applications that use osvrDisplay." ON)
+option(OSVR_SYSINFO_BUILD_TESTS "Build test programs and unit tests." ON)
+option(OSVR_SYSINFO_BUILD_HEADER_DEPENDENCY_TESTS "Should we add targets to ensure that every public header compiles cleanly on its own? Increases number of targets greatly..." ON)
 
 #
 # Default installation directories
@@ -44,12 +44,12 @@ add_subdirectory(osvr)
 include(CTest)
 enable_testing()
 
-if(BUILD_TESTS)
+if(OSVR_SYSINFO_BUILD_TESTS)
 	set(HEADER_BASE ${CMAKE_SOURCE_DIR}/osvr)
 	add_subdirectory(test)
 endif()
 
-if(BUILD_APPS)
+if(OSVR_SYSINFO_BUILD_APPS)
 	add_subdirectory(apps)
 endif()
 
