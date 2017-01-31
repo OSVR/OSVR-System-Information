@@ -2,6 +2,8 @@
 # osvr_system_report application
 #
 
+find_package(jsoncpp REQUIRED)
+
 add_executable(osvr_system_report
 	osvr_system_report.cpp)
 
