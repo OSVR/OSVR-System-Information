@@ -85,11 +85,6 @@ bool detect_osvr_usb_devices()
 
 int main(int argc, char* argv[])
 {
-    using std::cout;
-    using std::endl;
-    using std::flush;
-    using namespace osvr::sysinfo;
-
     bool all_okay = true;
 
     if (!detect_osvr_usb_devices())
