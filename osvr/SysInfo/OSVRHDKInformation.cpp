@@ -35,12 +35,14 @@
 #include <string>
 #include <sstream>
 
-namespace osvr {
-namespace sysinfo {
-
 // TODO get device manager notes about OSVR devices (Windows only)
 // TODO get HDK hardware and firmware versions
 // TODO get IR camera firmware veresion
+
+namespace osvr {
+namespace sysinfo {
+
+namespace detail {
 
 std::vector<std::string> retrieveHDKFirmwareVersion()
 {
@@ -97,7 +99,7 @@ boost::optional<HDKFirmwareInfo> parseHDKFirmwareInfo(const std::vector<std::str
     ss >> info.firmwareVersion;
     if (hdk_info.at(0).find("(") != std::string::npos) {
         ss >> release_type;
-        release_type = release_type.substr(1, release_type.size() - 1);
+        release_type = release_type.substr(1, release_type.size() - 2);
     }
     info.releaseType = release_type;
     ss >> month >> day >> year;
@@ -107,10 +109,12 @@ boost::optional<HDKFirmwareInfo> parseHDKFirmwareInfo(const std::vector<std::str
     return info;
 }
 
+} // namespace detail
+
 boost::optional<HDKFirmwareInfo> getHDKFirmwareInfo()
 {
-    const auto hdk_info = retrieveHDKFirmwareVersion();
-    return parseHDKFirmwareInfo(hdk_info);
+    const auto hdk_info = detail::retrieveHDKFirmwareVersion();
+    return detail::parseHDKFirmwareInfo(hdk_info);
 }
 
 } // namespace sysinfo

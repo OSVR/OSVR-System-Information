@@ -34,6 +34,7 @@
 
 // Standard includes
 #include <string>
+#include <vector>
 
 namespace osvr {
 namespace sysinfo {
@@ -52,6 +53,12 @@ struct OSVR_SYSINFO_EXPORT HDKFirmwareInfo {
 
 OSVR_SYSINFO_EXPORT boost::optional<HDKFirmwareInfo> getHDKFirmwareInfo();
 
+namespace detail {
+
+std::vector<std::string> retrieveHDKFirmwareVersion();
+boost::optional<HDKFirmwareInfo> parseHDKFirmwareInfo(const std::vector<std::string>& hdk_info);
+
+} // namespace detail
 } // namespace sysinfo
 } // namespace osvr
 

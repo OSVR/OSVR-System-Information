@@ -33,8 +33,8 @@ target_link_libraries(osvr_doctor
 #	SYSTEM PRIVATE)
 
 # Run osvr_doctor when we execute tests
-add_test(NAME osvr_doctor_test
-	COMMAND osvr_doctor)
+#add_test(NAME osvr_doctor_test
+	#COMMAND osvr_doctor)
 
 #
 # osvr_hdk application

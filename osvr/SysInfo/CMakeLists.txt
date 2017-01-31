@@ -50,6 +50,7 @@ target_link_libraries(osvrSysInfo_static
 	${LIBUSB1_LIBRARIES}
 	osvr::osvrUSBSerial
 	PUBLIC
+	osvr::osvrUtil
 	Boost::system)
 target_include_directories(osvrSysInfo_static
 	PUBLIC
