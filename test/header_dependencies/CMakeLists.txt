@@ -10,6 +10,8 @@ set(LIBRARIES_SysInfo
 	Boost::system)
 
 include_directories(
+	${CMAKE_CURRENT_BINARY_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_BINARY_DIR}
 	${CMAKE_SOURCE_DIR}
 	${LIBUSB1_INCLUDE_DIRS})

@@ -23,10 +23,10 @@ endfunction()
 
 add_osvr_test(test_OSVRHDKInformation
 	SOURCES
-	"${CMAKE_SOURCE_DIR}/osvr/SysInfo/OSVRHDKInformation.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../../osvr/SysInfo/OSVRHDKInformation.cpp"
 	INCLUDE_DIRS
-	"${CMAKE_SOURCE_DIR}"
-	"${CMAKE_BINARY_DIR}"
+	"${CMAKE_CURRENT_SOURCE_DIR}"
+	"${CMAKE_CURRENT_BINARY_DIR}"
 	LIBS
 	osvrSysInfo_static
 )

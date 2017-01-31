@@ -45,7 +45,7 @@ include(CTest)
 enable_testing()
 
 if(OSVR_SYSINFO_BUILD_TESTS)
-	set(HEADER_BASE ${CMAKE_SOURCE_DIR}/osvr)
+	set(HEADER_BASE ${CMAKE_CURRENT_SOURCE_DIR}/osvr)
 	add_subdirectory(test)
 endif()
 

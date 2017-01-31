@@ -13,7 +13,7 @@ target_link_libraries(osvr_system_report
 
 target_include_directories(osvr_system_report
 	SYSTEM PRIVATE
-	${CMAKE_SOURCE_DIR}/vendor/jsoncpp/include)
+	${CMAKE_CURRENT_SOURCE_DIR}/vendor/jsoncpp/include)
 
 # Run osvr_system_report when we execute tests
 add_test(NAME osvr_system_report_test
