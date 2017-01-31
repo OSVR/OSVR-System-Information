@@ -2,7 +2,17 @@
 # OSVR SysInfo library
 #
 
-set(_osvrSysInfo_headers
+# Generate the export header
+list(APPEND _osvrSysInfo_headers
+	"${CMAKE_CURRENT_BINARY_DIR}/Export.h")
+
+set(EXPORT_BASENAME OSVR_SYSINFO)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Export.h.in"
+	Export.h
+	@ONLY NEWLINE_STYLE LF)
+
+
+list(APPEND _osvrSysInfo_headers
 	EnvironmentVariables.h
 	MemoryInformation.h
 	OperatingSystem.h
@@ -12,7 +22,7 @@ set(_osvrSysInfo_headers
 	USBInformation.h
 	Utilities.h)
 
-set(_osvrSysInfo_src
+list(APPEND _osvrSysInfo_src
 	EnvironmentVariables.cpp
 	MemoryInformation.cpp
 	OperatingSystem.cpp
@@ -26,6 +36,7 @@ set(_osvrSysInfo_deps)
 # Dynamic library
 add_library(osvrSysInfo
 	SHARED ${_osvrSysInfo_src} ${_osvrSysInfo_headers})
+
 target_link_libraries(osvrSysInfo
 	PRIVATE
 	${_osvrSysInfo_deps}
@@ -33,6 +44,7 @@ target_link_libraries(osvrSysInfo
 	osvr::osvrUSBSerial
 	PUBLIC
 	Boost::system)
+
 target_include_directories(osvrSysInfo
 	PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
@@ -44,6 +56,7 @@ target_include_directories(osvrSysInfo
 # Static library
 add_library(osvrSysInfo_static
 	STATIC ${_osvrSysInfo_src} ${_osvrSysInfo_headers})
+
 target_link_libraries(osvrSysInfo_static
 	PRIVATE
 	${_osvrSysInfo_deps}
@@ -52,6 +65,7 @@ target_link_libraries(osvrSysInfo_static
 	PUBLIC
 	osvr::osvrUtil
 	Boost::system)
+
 target_include_directories(osvrSysInfo_static
 	PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
@@ -63,11 +77,6 @@ target_include_directories(osvrSysInfo_static
 set_property(TARGET osvrSysInfo
 	PROPERTY POSITION_INDEPENDENT_CODE 1)
 
-# Generate export header
-include(GenerateExportHeader)
-generate_export_header(osvrSysInfo
-	BASE_NAME OSVR_SYSINFO
-	EXPORT_FILE_NAME Export.h)
 target_compile_definitions(osvrSysInfo_static
 	PUBLIC OSVR_SYSINFO_STATIC_DEFINE)
 
