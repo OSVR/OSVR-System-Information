@@ -35,7 +35,7 @@
 // Standard includes
 // - none
 
-bool test_parseHDKFirmwareInfo(const std::vector<std::string>& input, const osvr::sysinfo::HDKFirmwareInfo& expected)
+void test_parseHDKFirmwareInfo(const std::vector<std::string>& input, const osvr::sysinfo::HDKFirmwareInfo& expected)
 {
     const auto actual = osvr::sysinfo::detail::parseHDKFirmwareInfo(input);
     CHECK(actual);
