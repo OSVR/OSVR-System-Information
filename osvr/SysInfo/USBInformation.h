@@ -42,7 +42,7 @@
 namespace osvr {
 namespace sysinfo {
 
-class OSVR_SYSINFO_EXPORT USBDevice {
+class USBDevice {
 public:
     USBDevice(libusb_device* device);
     std::string getPathString() const;

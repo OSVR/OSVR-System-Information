@@ -24,7 +24,7 @@
 // limitations under the License.
 
 // Internal Includes
-#include <osvr/SysInfo/Export.h>
+// - none
 
 // Library/third-party includes
 // - none
@@ -37,7 +37,7 @@
 namespace osvr {
 namespace sysinfo {
 
-OSVR_SYSINFO_EXPORT std::string to_string(const std::wstring& s)
+std::string to_string(const std::wstring& s)
 {
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
     return converter.to_bytes(s);

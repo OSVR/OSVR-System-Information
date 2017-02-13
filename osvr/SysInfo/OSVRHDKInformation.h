@@ -43,15 +43,15 @@ namespace sysinfo {
 // TODO get HDK hardware and firmware versions
 // TODO get IR camera firmware veresion
 
-struct OSVR_SYSINFO_EXPORT HDKFirmwareInfo {
-    std::string firmwareVersion;
-    std::string releaseType;
-    std::string date;
+struct HDKFirmwareInfo {
+	std::string firmwareVersion;
+	std::string releaseType;
+	std::string date;
     std::string trackerVersion;
-    std::string detailedInformation;
+	std::string detailedInformation;
 };
 
-OSVR_SYSINFO_EXPORT boost::optional<HDKFirmwareInfo> getHDKFirmwareInfo();
+boost::optional<HDKFirmwareInfo> getHDKFirmwareInfo();
 
 namespace detail {
 

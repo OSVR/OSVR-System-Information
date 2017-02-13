@@ -33,8 +33,6 @@
 // - none
 
 // Standard includes
-#include <codecvt>  // codecvt_utf8
-#include <locale>   // wstring_convert
 #include <string>   // string, wstring
 
 namespace osvr {
