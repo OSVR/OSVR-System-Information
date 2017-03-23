@@ -72,10 +72,17 @@ int main(int argc, char* argv[])
     std::cout << std::endl;
 
     std::time_t now = std::time(nullptr);
-    char mbstr[100];
+    char mbstr[100] = { '\0' };
+    if (std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%SZ", std::localtime(&now))) {
+        report["timestamp"] = mbstr;
+    }
+
+#if 0
+    // %FT%TZ not yet supported by MSVC 2013
     if (std::strftime(mbstr, sizeof(mbstr), "%FT%TZ", std::localtime(&now))) {
         report["timestamp"] = mbstr;
     }
+#endif
 
     std::cout << "Collecting operating system information..." << std::flush;
     const auto os_name = getOSName();

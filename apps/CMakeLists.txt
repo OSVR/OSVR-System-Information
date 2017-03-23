@@ -15,6 +15,9 @@ target_include_directories(osvr_system_report
 	SYSTEM PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/vendor/jsoncpp/include)
 
+install(TARGETS osvr_system_report
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Runtime)
+
 # Run osvr_system_report when we execute tests
 add_test(NAME osvr_system_report_test
 	COMMAND osvr_system_report)
@@ -31,6 +34,9 @@ target_link_libraries(osvr_doctor
 
 #target_include_directories(osvr_doctor
 #	SYSTEM PRIVATE)
+
+install(TARGETS osvr_doctor
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Runtime)
 
 # Run osvr_doctor when we execute tests
 #add_test(NAME osvr_doctor_test
@@ -50,6 +56,9 @@ target_link_libraries(osvr_hdk
 
 #target_include_directories(osvr_hdk
 #	SYSTEM PRIVATE)
+
+install(TARGETS osvr_hdk
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Runtime)
 
 # Run osvr_hdk when we execute tests
 add_test(NAME osvr_hdk_test

@@ -29,7 +29,7 @@ include(GNUInstallDirs)
 
 find_package(Libusb1 REQUIRED)
 set(Boost_USE_STATIC_LIBS 1)
-find_package(Boost REQUIRED COMPONENTS system program_options date_time)
+find_package(Boost REQUIRED COMPONENTS system program_options date_time regex)
 find_package(osvr REQUIRED)
 
 #

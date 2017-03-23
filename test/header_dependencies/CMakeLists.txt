@@ -7,6 +7,9 @@ set(IGNORED_HEADERS)
 set(LIBRARIES_SysInfo
 	${LIBUSB1_LIBRARIES}
 	osvr::osvrUSBSerial
+	Boost::boost
+	Boost::date_time
+	Boost::regex
 	Boost::system)
 
 include_directories(

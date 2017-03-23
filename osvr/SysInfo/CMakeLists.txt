@@ -7,6 +7,7 @@ list(APPEND _osvrSysInfo_headers
 	"${CMAKE_CURRENT_BINARY_DIR}/Export.h")
 
 set(EXPORT_BASENAME OSVR_SYSINFO)
+set(LIBNAME_FULL osvrSysInfo)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Export.h.in"
 	Export.h
 	@ONLY NEWLINE_STYLE LF)
@@ -43,7 +44,10 @@ target_link_libraries(osvrSysInfo
 	${LIBUSB1_LIBRARIES}
 	osvr::osvrUSBSerial
 	PUBLIC
-	Boost::system)
+	Boost::boost
+	Boost::regex
+	Boost::system
+	Boost::date_time)
 
 target_include_directories(osvrSysInfo
 	PUBLIC
@@ -65,7 +69,10 @@ target_link_libraries(osvrSysInfo_static
 	osvr::osvrUSBSerial
 	PUBLIC
 	osvr::osvrUtil
-	Boost::system)
+	Boost::boost
+	Boost::regex
+	Boost::system
+	Boost::date_time)
 
 target_include_directories(osvrSysInfo_static
 	PUBLIC

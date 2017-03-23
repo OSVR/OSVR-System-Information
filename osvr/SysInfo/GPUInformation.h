@@ -33,6 +33,7 @@
 // - none
 
 // Standard includes
+#include <cstdint>
 #include <string>
 #include <vector>
 
